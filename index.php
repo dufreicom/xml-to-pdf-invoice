@@ -1,30 +1,32 @@
 <?php
+    //Import using composer libraries CfdiUtils & CfdiToPdf
     require "vendor/autoload.php";
-
+    
+    //Starting script server open CORS
     header('Access-Control-Allow-Origin: GET,POST');
     header('Content-Type: application/json');
 
     
+    //Obtaining xml from JSON
     $data = json_decode(file_get_contents('php://input'), true);
-
     $xml = $data['external'];
 
-    //clean cfdi
+    //Clean cfdi
     $xml = CfdiUtils\Cleaner\Cleaner::staticClean($xml);
 
-    // create the main node structure
+    // Create the main node structure
     $comprobante = CfdiUtils\Nodes\XmlNodeUtils::nodeFromXmlString($xml);
 
-    // create the CfdiData object, it contains all the required information
+    //Create the CfdiData object, it contains all the required information
     $cfdiData = (new PhpCfdi\CfdiToPdf\CfdiDataBuilder())
         ->build($comprobante);
 
-    // create the converter
+    //Create the converter
     $converter = new PhpCfdi\CfdiToPdf\Converter(
         new PhpCfdi\CfdiToPdf\Builders\Html2PdfBuilder()
     );
 
-    // create the invoice as output.pdf
+    //Create the invoice as output.pdf
     $converter->createPdfAs($cfdiData, 'output.pdf');
     
     //Variable for returns any message
