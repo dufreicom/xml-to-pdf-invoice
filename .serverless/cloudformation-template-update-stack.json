@@ -161,13 +161,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/xmlToPdfDev/dev/1638998921479-2021-12-08T21:28:41.479Z/xmlToPdfDev.zip"
+          "S3Key": "serverless/xmlToPdfDev/dev/1639066848566-2021-12-09T16:20:48.566Z/xmlToPdfDev.zip"
         },
         "Handler": "index.php",
         "Runtime": "provided.al2",
         "FunctionName": "xmlToPdfDev-dev-api",
         "MemorySize": 1024,
         "Timeout": 28,
+        "Environment": {
+          "Variables": {
+            "BREF_BINARY_RESPONSES": "1"
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -182,14 +187,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionXcwm1AKuvc5uEdWlMtkAOD25fwJ0QO0ZGOdL2gTfo": {
+    "ApiLambdaVersionTJN2DYRNgCyBG7e4AnX5h5EFHEBVd3JSbavncvkwPQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "OkviYvpXdzwkcsMceBDDjJOgKb81ncOOkDibx+23N58="
+        "CodeSha256": "marigqAy3SnIAU5a/MRyfK3ZiW2qtyM8f4TxkYadJNI="
       }
     },
     "HttpApi": {
@@ -300,7 +305,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionXcwm1AKuvc5uEdWlMtkAOD25fwJ0QO0ZGOdL2gTfo"
+        "Ref": "ApiLambdaVersionTJN2DYRNgCyBG7e4AnX5h5EFHEBVd3JSbavncvkwPQ"
       },
       "Export": {
         "Name": "sls-xmlToPdfDev-dev-ApiLambdaFunctionQualifiedArn"
