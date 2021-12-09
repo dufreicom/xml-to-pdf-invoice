@@ -2,6 +2,7 @@
     "name": "api/cfditopdf",
     "require": {
         "eclipxe/cfdiutils": "2.16.0",
-        "phpcfdi/cfditopdf": "0.3.4"
+        "phpcfdi/cfditopdf": "0.3.4",
+        "bref/bref": "^1.4"
     }
  }
