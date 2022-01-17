@@ -1,8 +1,16 @@
 {
     "name": "api/cfditopdf",
     "require": {
+        "php": "8.0.14",
         "eclipxe/cfdiutils": "2.16.0",
         "phpcfdi/cfditopdf": "0.3.4",
         "bref/bref": "^1.4"
-    }
+    },
+    "config": {
+		"optimize-autoloader": true,
+		"prepend-autoloader": false,
+		"platform": {
+			"php": "8.0.14"
+		}
+	}
  }
