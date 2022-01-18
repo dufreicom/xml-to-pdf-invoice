@@ -22,13 +22,19 @@ $comprobante = CfdiUtils\Nodes\XmlNodeUtils::nodeFromXmlString($xml);
 $cfdiData = (new PhpCfdi\CfdiToPdf\CfdiDataBuilder())
     ->build($comprobante);
 
+//Call template
+$htmlTranslator = new \PhpCfdi\CfdiToPdf\Builders\HtmlTranslators\PlatesHtmlTranslator(
+    '/Users/rafael/Documents/projects/rodrigo/cfphp/cfditopdf',
+    'template'
+);
+
 //Create the converter
 $converter = new PhpCfdi\CfdiToPdf\Converter(
-    new PhpCfdi\CfdiToPdf\Builders\Html2PdfBuilder()
+    new PhpCfdi\CfdiToPdf\Builders\Html2PdfBuilder($htmlTranslator)
 );
 
 //Create the invoice as output.pdf
-$converter->createPdfAs($cfdiData, '/tmp/output.pdf');
+$converter->createPdfAs($cfdiData, 'output.pdf');
 
 //Variable for returns any message
 $ret = [];
