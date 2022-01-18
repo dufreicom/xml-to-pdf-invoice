@@ -24,7 +24,7 @@ $cfdiData = (new PhpCfdi\CfdiToPdf\CfdiDataBuilder())
 
 //Call template
 $htmlTranslator = new \PhpCfdi\CfdiToPdf\Builders\HtmlTranslators\PlatesHtmlTranslator(
-    '/Users/rafael/Documents/projects/rodrigo/cfphp/cfditopdf',
+    getcwd(),
     'template'
 );
 
