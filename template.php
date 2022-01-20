@@ -24,7 +24,7 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
 ?>
 <style>
     * {
-        font-size: 8pt;
+        font-size: 7pt;
         padding: 0;
         margin: 0;
     }
@@ -61,6 +61,15 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
     div.panel div.content {
         padding: 1mm 2mm;
     }
+
+    #address{
+        display: flex;
+        align-items: center;
+    }
+
+    #addressp{
+        white-space: pre;
+    }
 </style>
 <!--suppress HtmlUnknownTag -->
 <page backbottom="10mm">
@@ -77,7 +86,7 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
             <tr>
                 <td rowspan="20" style="padding-right: 4mm;">
                     <!--suppress CheckEmptyScriptTag, HtmlUnknownTag -->
-                    <qrcode style="width: 40mm;" ec="M" value="<?=$this->e($cfdiData->qrUrl())?>"/>
+                    <qrcode style="width: 30mm;" ec="M" value="<?=$this->e($cfdiData->qrUrl())?>"/>
                 </td>
                 <th>Tipo:</th>
                 <td><?=$this->e($comprobante['TipoDeComprobante'])?></td>
@@ -156,19 +165,6 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
             </p>
         </div>
     </div>
-    <?php if (null !== $complemento) : ?>
-        <div class="panel">
-        <div class="title">Carta Porte</div>
-        <?php 
-            $cartaPorte = $complemento -> searchNode('cartaporte20:CartaPorte');
-            $ubicaciones = $cartaPorte -> searchNodes('cartaporte20:Ubicaciones','cartaporte20:Ubicacion');
-        ?>
-        <?php foreach ($ubicaciones as $ubicacion) : ?>
-                    <span>Ubic: <?=$ubicacion['IDUbicacion']?></span>
-        <?php endforeach; ?>
-        </div>
-
-    <?php endif; ?>
     <?php if (null !== $relacionados) : ?>
         <div class="panel">
             <div class="title">CFDI Relacionados (Tipo de relación: <?=$this->e($relacionados['TipoRelacion'])?>)</div>
@@ -364,6 +360,65 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
             </div>
         </div>
     <?php endif ?>
+
+    <?php if (null !== $complemento) : ?>
+        <?php 
+            $cartaPorte = $complemento -> searchNode('cartaporte20:CartaPorte');
+            $ubicaciones = $cartaPorte -> searchNodes('cartaporte20:Ubicaciones','cartaporte20:Ubicacion');
+        ?>
+        <div class="panel">
+            <div class="title">Carta Porte</div>
+            <div class="content">
+            <p style="text-align: center">Ubicaciones</p>
+                <table style="width: 40%">
+                    <tr>
+                        <!-- <th style="width: 20%">Tipo de Ubicacion</th>
+                        <th style="width: 20%">RFC</th>
+                        <th style="width: 100%">Dirección</th> -->
+                        <th style="width: 40%">Tipo de Ubicacion</th>
+                        <th style="width: 30%">RFC</th>
+                        <th style="width: 30%"><div>Dirección</div></th>
+                    </tr>
+                    <?php foreach ($ubicaciones as $ubicacion) : ?>
+                        <tr>
+                            <td><?=$this->e($ubicacion['TipoUbicacion'])?></td>
+                            <td><?=$this->e($ubicacion['RFCRemitenteDestinatario'])?></td>
+                            <!-- <td><?=$this->e($ubicacion['RFCRemitenteDestinatario'])?></td> -->
+                            <?php 
+                                $domicilios = $ubicacion -> searchNodes('cartaporte20:Domicilio');
+                                // var_dump($domicilios);
+                            ?>
+                            <?php foreach ($domicilios as $domicilio) :?>
+                                <td>
+                                    
+                                    <div>
+                                        <p>
+                                   <?=$this->e($domicilio['Calle'])?>
+                                   <?=$this->e($domicilio['NumeroExterior'])?>
+                                    <?=$this->e($domicilio['Colonia'])?>
+                                    <?=$this->e($domicilio['Municipio'])?>
+                                    <?=$this->e($domicilio['Estado'])?>
+                            </p>
+                                    </div>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+
+                <p style="text-align: center">Producto</p>
+                <p style="text-align: center">Vehiculos</p>
+                <p style="text-align: center">Remolques</p>
+                <p style="text-align: center">Conductor</p>
+
+
+            </div>
+            
+            
+        </div>
+
+    <?php endif; ?>
+
     <div class="panel">
         <div class="title">Totales</div>
         <div class="content">

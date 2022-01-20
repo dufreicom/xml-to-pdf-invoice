@@ -40,7 +40,7 @@ $converter->createPdfAs($cfdiData, 'output.pdf');
 $ret = [];
 
 //Check if pdf generated exist
-$pdf_result = '/tmp/output.pdf';
+$pdf_result = 'output.pdf';
 if(file_exists($pdf_result)) {
     /**Response PDF as base64 */
     //Open file, convert to Base64, Response it & finish script
