@@ -22,9 +22,15 @@ $comprobante = CfdiUtils\Nodes\XmlNodeUtils::nodeFromXmlString($xml);
 $cfdiData = (new PhpCfdi\CfdiToPdf\CfdiDataBuilder())
     ->build($comprobante);
 
+//Call template
+$htmlTranslator = new \PhpCfdi\CfdiToPdf\Builders\HtmlTranslators\PlatesHtmlTranslator(
+    getcwd(),
+    'template'
+);
+
 //Create the converter
 $converter = new PhpCfdi\CfdiToPdf\Converter(
-    new PhpCfdi\CfdiToPdf\Builders\Html2PdfBuilder()
+    new PhpCfdi\CfdiToPdf\Builders\Html2PdfBuilder($htmlTranslator)
 );
 
 //Create the invoice as output.pdf
