@@ -58,17 +58,33 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
         padding: 1mm 2mm;
     }
 
+    
     div.panel div.content {
         padding: 1mm 2mm;
     }
 
-    #address{
-        display: flex;
-        align-items: center;
+    .panelcp .contentcp {
+        border: 0.2mm solid #0000;
+        margin-bottom: 1mm;
     }
 
-    #addressp{
-        white-space: pre;
+    .titlecp {
+        background-color: #333333;
+        color: #ffffff;
+        font-weight: bold;
+        padding: 1mm 2mm;
+    }
+
+    .subtitle {
+        text-align: center;
+        font-weight: bold;
+        font-style: italic;
+    }
+    .subtable {
+        width: 100%;
+    }
+    .border-subtable {
+        border-bottom: 0.2mm solid black !important;
     }
 </style>
 <!--suppress HtmlUnknownTag -->
@@ -360,63 +376,165 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
             </div>
         </div>
     <?php endif ?>
-
+    
+    <!-- Complemento - Carta Porte -->
     <?php if (null !== $complemento) : ?>
-        <?php 
-            $cartaPorte = $complemento -> searchNode('cartaporte20:CartaPorte');
-            $ubicaciones = $cartaPorte -> searchNodes('cartaporte20:Ubicaciones','cartaporte20:Ubicacion');
-        ?>
-        <div class="panel">
-            <div class="title">Carta Porte</div>
-            <div class="content">
-            <p style="text-align: center">Ubicaciones</p>
-                <table style="width: 40%">
-                    <tr>
-                        <!-- <th style="width: 20%">Tipo de Ubicacion</th>
-                        <th style="width: 20%">RFC</th>
-                        <th style="width: 100%">Dirección</th> -->
-                        <th style="width: 40%">Tipo de Ubicacion</th>
-                        <th style="width: 30%">RFC</th>
-                        <th style="width: 30%"><div>Dirección</div></th>
-                    </tr>
-                    <?php foreach ($ubicaciones as $ubicacion) : ?>
+        <!-- Variables de los primeros nodos hijos en la carta porte -->
+        <?php $cartaPorte = $complemento -> searchNode('cartaporte20:CartaPorte'); ?>
+            <?php if (null !== $cartaPorte) : ?>
+            <?php 
+                $cartaPorte = $complemento -> searchNode('cartaporte20:CartaPorte');
+                $ubicaciones = $cartaPorte -> searchNodes('cartaporte20:Ubicaciones','cartaporte20:Ubicacion');
+                $mercancias = $cartaPorte -> searchNodes('cartaporte20:Mercancias','cartaporte20:Mercancia');
+                $_mercancias = $cartaPorte -> searchNode('cartaporte20:Mercancias');
+                $autotransporte = $_mercancias -> searchNode('cartaporte20:Autotransporte');
+                $figuraTransporte = $cartaPorte -> searchNode('cartaporte20:FiguraTransporte');
+            ?>
+            <div class="panelcp">
+                <div class="titlecp">Carta Porte</div>
+                <div class="contentcp">
+                    
+                    <!-- Ubicaciones -->
+                    <p class="subtitle">Ubicaciones</p>
+                    <table  class="subtable border-subtable">
                         <tr>
-                            <td><?=$this->e($ubicacion['TipoUbicacion'])?></td>
-                            <td><?=$this->e($ubicacion['RFCRemitenteDestinatario'])?></td>
-                            <!-- <td><?=$this->e($ubicacion['RFCRemitenteDestinatario'])?></td> -->
+                            <th style="width: 40%">Tipo de Ubicacion</th>
+                            <th style="width: 30%">RFC</th>
+                            <th style="width: 30%">Dirección</th>
+                        </tr>
+                        <?php foreach ($ubicaciones as $ubicacion) : ?>
+                            <tr>
+                                <td><?=$this->e($ubicacion['TipoUbicacion'])?></td>
+                                <td><?=$this->e($ubicacion['RFCRemitenteDestinatario'])?></td>
+                                <?php 
+                                    $domicilios = $ubicacion -> searchNodes('cartaporte20:Domicilio');
+                                ?>
+                                <?php foreach ($domicilios as $domicilio) :?>
+                                    <td>
+                                        
+                                                <?=$this->e($domicilio['Calle'])?>
+                                                <?=$this->e($domicilio['NumeroExterior'])?>
+                                                <?=$this->e($domicilio['Colonia'])?>
+                                                <?=$this->e($domicilio['Municipio'])?>
+                                                <?=$this->e($domicilio['Estado'])?>
+                                            
+                                    </td>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+
+                    <!-- Producto / Mercancias -->
+                    <p class="subtitle">Mercancias</p>
+                    <table class="subtable border-subtable">
+                        <tr>
+                            <th style="width: 20%">Bienes transportados</th>
+                            <th style="width: 30%">Descripcion</th>
+                            <th style="width: 10%">Cantidad</th>
+                            <th style="width: 10%">Clave de Unidad</th>
+                            <th style="width: 10%">Peso en Kg</th>
+                            <th style="width: 10%">Material Peligroso</th>
+                            <th style="width: 10%">Clave MP</th>
+                        </tr>
+                        <?php foreach ($mercancias as $mercancia) : ?>
+                            <tr>
+                                <td><?=$this->e($mercancia['BienesTransp'])?></td>
+                                <td><?=$this->e($mercancia['Descripcion'])?></td>
+                                <td><?=$this->e($mercancia['Cantidad'])?></td>
+                                <td><?=$this->e($mercancia['PesoEnKg'])?></td>
+                                <td><?=$this->e($mercancia['PesoEnKg'])?></td>
+                                <td><?=$this->e($mercancia['MaterialPeligroso'])?></td>
+                                <td><?=$this->e($mercancia['CveMaterialPeligroso'])?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+
+                    <!-- Seguros  -->
+                    <p class="subtitle">Seguro</p>
+                    <table class="subtable border-subtable">
+                        <tr>
+                            <th style="width: 20%">Aseguradora</th>
+                            <th style="width: 20%">Poliza</th>
+                            <th style="width: 20%">Carga Asegurada</th>
+                            <th style="width: 20%">Aseguradora Med. Amb.</th>
+                            <th style="width: 20%">Poliza Med. Amb</th>
+                        </tr>
+                    
+                        <tr>
                             <?php 
-                                $domicilios = $ubicacion -> searchNodes('cartaporte20:Domicilio');
-                                // var_dump($domicilios);
+                                $seguros = $autotransporte -> searchNode('cartaporte20:Seguros');
                             ?>
-                            <?php foreach ($domicilios as $domicilio) :?>
-                                <td>
-                                    
-                                    <div>
-                                        <p>
-                                   <?=$this->e($domicilio['Calle'])?>
-                                   <?=$this->e($domicilio['NumeroExterior'])?>
-                                    <?=$this->e($domicilio['Colonia'])?>
-                                    <?=$this->e($domicilio['Municipio'])?>
-                                    <?=$this->e($domicilio['Estado'])?>
-                            </p>
-                                    </div>
-                                </td>
+                            <td><?=$this->e($seguros['AseguraRespCivil'])?></td>
+                            <td><?=$this->e($seguros['PolizaRespCivil'])?></td>
+                            <td><?=$this->e($seguros['AseguraCarga'])?></td>
+                            <td><?=$this->e($seguros['AseguraMedAmbiente'])?></td>
+                            <td><?=$this->e($seguros['PolizaMedAmbiente'])?></td>
+                        </tr>
+                        
+                    </table>
+                    
+                    <!-- Vehiculos  -->
+                    <p class="subtitle">Autotransporte</p>
+                    <table class="subtable border-subtable">
+                        <tr>
+                            <th style="width: 20%">Permiso SCT</th>
+                            <th style="width: 20%">Numero Permiso</th>
+                            <th style="width: 20%">Configuración Vehicular</th>
+                            <th style="width: 20%">Placa</th>
+                            <th style="width: 20%">Año del modelo</th>
+                        </tr>
+                    
+                        <tr>
+                            <td><?=$this->e($autotransporte['PermSCT'])?></td>
+                            <td><?=$this->e($autotransporte['NumPermisoSCT'])?></td>
+                            <?php 
+                                $identificacionVehicular = $autotransporte -> searchNode('cartaporte20:IdentificacionVehicular');
+                            ?>
+                            <td><?=$this->e($identificacionVehicular['ConfigVehicular'])?></td>
+                            <td><?=$this->e($identificacionVehicular['PlacaVM'])?></td>
+                            <td><?=$this->e($identificacionVehicular['AnioModeloVM'])?></td>
+                        </tr>
+                        
+                    </table>
+
+                    <!-- Remolques -->
+                    <p class="subtitle">Remolques</p>
+                    <table class="subtable border-subtable">
+                        <tr>
+                            <th style="width: 50%">Subtipo</th>
+                            <th style="width: 50%">Placas</th>
+                        </tr>
+                    
+                        <tr>
+                            <?php 
+                                $remolques = $autotransporte -> searchNodes('cartaporte20:Remolques', 'cartaporte20:Remolque');
+                            ?>
+                            <?php foreach ($remolques as $remolque) : ?>
+                                <td><?=$this->e($remolque['SubTipoRem'])?></td>
+                                <td><?=$this->e($remolque['Placa'])?></td>
                             <?php endforeach; ?>
                         </tr>
-                    <?php endforeach; ?>
-                </table>
+                    </table>
 
-                <p style="text-align: center">Producto</p>
-                <p style="text-align: center">Vehiculos</p>
-                <p style="text-align: center">Remolques</p>
-                <p style="text-align: center">Conductor</p>
-
-
+                    <!--  Conductor  -->
+                    <p class="subtitle">Conductor</p>
+                    <table class="subtable">
+                        <tr>
+                            <th style="width: 50%">RFC</th>
+                            <th style="width: 50%">Número licencia</th>
+                        </tr>
+                    
+                        <tr>
+                            <?php 
+                                $tiposFigura = $figuraTransporte -> searchNode('cartaporte20:TiposFigura');
+                            ?>
+                            <td><?=$this->e($tiposFigura['RFCFigura'])?></td>
+                            <td><?=$this->e($tiposFigura['NumLicencia'])?></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            
-            
-        </div>
-
+        <?php endif; ?>
     <?php endif; ?>
 
     <div class="panel">
