@@ -82,9 +82,17 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
     }
     .subtable {
         width: 100%;
+        max-width: 100%
     }
     .border-subtable {
         border-bottom: 0.2mm solid black !important;
+    }
+
+    .pa{
+        display: block;
+        max-width: 10%;
+        white-space: nowrap;
+        overflow: hidden;
     }
 </style>
 <!--suppress HtmlUnknownTag -->
@@ -398,9 +406,9 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
                     <p class="subtitle">Ubicaciones</p>
                     <table  class="subtable border-subtable">
                         <tr>
-                            <th style="width: 40%">Tipo de Ubicacion</th>
-                            <th style="width: 30%">RFC</th>
-                            <th style="width: 30%">Dirección</th>
+                            <th style="width: 20%">Tipo de Ubicacion</th>
+                            <th style="width: 20%">RFC</th>
+                            <th style="width: 60%">Dirección</th>
                         </tr>
                         <?php foreach ($ubicaciones as $ubicacion) : ?>
                             <tr>
@@ -410,14 +418,17 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
                                     $domicilios = $ubicacion -> searchNodes('cartaporte20:Domicilio');
                                 ?>
                                 <?php foreach ($domicilios as $domicilio) :?>
-                                    <td>
-                                        
+                                    <td style="white-space:pre-wrap; word-wrap:break-word">
                                                 <?=$this->e($domicilio['Calle'])?>
                                                 <?=$this->e($domicilio['NumeroExterior'])?>
+                                                <br />
                                                 <?=$this->e($domicilio['Colonia'])?>
+                                                <br />
                                                 <?=$this->e($domicilio['Municipio'])?>
+                                                <br />
                                                 <?=$this->e($domicilio['Estado'])?>
-                                            
+                                                <br />
+                                                <?=$this->e($domicilio['CodigoPostal'])?>
                                     </td>
                                 <?php endforeach; ?>
                             </tr>
