@@ -419,8 +419,11 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
                                 ?>
                                 <?php foreach ($domicilios as $domicilio) :?>
                                     <td style="white-space:pre-wrap; word-wrap:break-word">
-                                                <?=$this->e($domicilio['Calle'])?>
-                                                <?=$this->e($domicilio['NumeroExterior'])?>
+                                                <?php 
+                                                    $longString = $domicilio['Calle'] . " " . $domicilio['NumeroExterior'] . " " . $domicilio['Colonia'] . " " . $domicilio['Municipio'] . " " .$domicilio['Estado'] . " " . $domicilio['CodigoPostal'];
+                                                    echo(wordwrap($longString, 75, "<br>", true))
+                                                ?>
+                                                <!-- <?=$this->e($domicilio['NumeroExterior'])?>
                                                 <br />
                                                 <?=$this->e($domicilio['Colonia'])?>
                                                 <br />
@@ -428,7 +431,8 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
                                                 <br />
                                                 <?=$this->e($domicilio['Estado'])?>
                                                 <br />
-                                                <?=$this->e($domicilio['CodigoPostal'])?>
+                                                <?=$this->e($domicilio['CodigoPostal'])?> -->
+                                                <!-- <?php echo(wordwrap("Avenida del panteon Mz 450 Lt 8 Avenida del panteon Mz 450 Lt 8 Avenida del panteon Mz 450 Lt 8 Avenida del panteon Mz 450 Lt 8", 80, '<br>', true))?> -->
                                     </td>
                                 <?php endforeach; ?>
                             </tr>
