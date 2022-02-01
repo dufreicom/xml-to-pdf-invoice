@@ -406,9 +406,9 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
                     <p class="subtitle">Ubicaciones</p>
                     <table  class="subtable border-subtable">
                         <tr>
-                            <th style="width: 20%">Tipo de Ubicacion</th>
-                            <th style="width: 20%">RFC</th>
-                            <th style="width: 60%">Dirección</th>
+                            <th style="width: 10%">Tipo de Ubicacion</th>
+                            <th style="width: 10%">RFC</th>
+                            <th style="width: 80%">Dirección</th>
                         </tr>
                         <?php foreach ($ubicaciones as $ubicacion) : ?>
                             <tr>
@@ -421,7 +421,7 @@ $complemento = $comprobante -> searchNode('cfdi:Complemento');
                                     <td style="white-space:pre-wrap; word-wrap:break-word">
                                                 <?php 
                                                     $longString = $domicilio['Calle'] . " " . $domicilio['NumeroExterior'] . " " . $domicilio['Colonia'] . " " . $domicilio['Municipio'] . " " .$domicilio['Estado'] . " " . $domicilio['CodigoPostal'];
-                                                    echo(wordwrap($longString, 75, "<br>", true))
+                                                    echo(wordwrap($longString, 70, "<br>", true))
                                                 ?>
                                                 <!-- <?=$this->e($domicilio['NumeroExterior'])?>
                                                 <br />
